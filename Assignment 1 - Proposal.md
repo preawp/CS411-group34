@@ -1,6 +1,6 @@
 # Project Idea: Recipe generator based on available ingredients
 
-This project should allow the user to input ingredients available to them, or ones they wish to cook with, and it should correlate them to existing recipes from an API. It's often hard to think of what to cook, or it can be daunting to find recipes of appropriate levels of difficulty, so the goal of this project is to facilitate that. On top of that, some more explanation of the features is detailed below.
+This project should allow the user to input ingredients available to them, or ones they wish to cook with, and it should correlate them to existing recipes from an API. It's often hard to think of what to cook, or it can be daunting to find recipes of appropriate levels of difficulty, so the goal of this project is to facilitate this process. On top of that, some more features are detailed below.
 
 
 ## General Features:
