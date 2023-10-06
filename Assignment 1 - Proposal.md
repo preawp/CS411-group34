@@ -6,8 +6,8 @@ This project should allow the user to input ingredients available to them, or on
 ## General Features:
 * Provide Recipes based on given ingredients, desired complexity, cooking style/preferences, and time constraints.
 * Allow an option that is budget-friendly, possibly for students
-* Show where to get nearby ingredients
-* Can input preferences -> Create a profile, add basic info, etc.
+* Show where to get nearby ingredients,suggest online grocery shopping sites, delivery options
+* Can input preferences -> Create a profile, add basic info, specify allergens, dietary restriction, etc.
 * Profiles can be accessed through third-party authentication and they are stored in a database.
 * Can save favorite recipes (they can also be stored in a database).
 
