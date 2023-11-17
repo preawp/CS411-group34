@@ -1,0 +1,19 @@
+/* Header.css */
+
+/* Import the 'Satisfy' font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+
+/* Apply the 'Satisfy' font to the header text */
+.satisfy-font {
+  font-family: 'Satisfy', cursive;
+  font-size: 48px;
+  color: #ffffff; /* Mint color text */
+  /* Text stroke using multiple shadows */
+  text-shadow: 
+    -1px -1px 0 #000000, /* Top-left */
+    1px -1px 0 #000, /* Top-right */
+    -1px 1px 0 #000, /* Bottom-left */
+    1px 1px 0 #000; /* Bottom-right */
+  /* Additional styles for the header text */
+  /* Add other styles as needed */
+}
