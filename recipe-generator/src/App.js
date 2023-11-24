@@ -37,7 +37,7 @@ function App() {
         <>
           {/* Display Google login button */}
           <GoogleLogin
-            clientId="your_google_client_id" // Replace with your Google OAuth client ID
+            clientId="342236352531-9djnv5q03jlfb7amogjmb2j6l7pf3lme.apps.googleusercontent.com" // Replace with your Google OAuth client ID
             buttonText="Login with Google"
             onSuccess={handleSignIn}
             onFailure={onFailure}
