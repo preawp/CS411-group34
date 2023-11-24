@@ -1,80 +1,64 @@
-// where user select or type in their preferred ingredients
 import React, { useState } from 'react';
 import './IngredientSelection.css'; // Ensure this path matches the location of your CSS file
 
 const IngredientSelection = () => {
+  const [inputValue, setInputValue] = useState('');
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [generatedMenu, setGeneratedMenu] = useState([]);
 
-  const handleIngredientSelect = (ingredient) => {
-    const updatedIngredients = selectedIngredients.includes(ingredient)
-      ? selectedIngredients.filter((item) => item !== ingredient)
-      : [...selectedIngredients, ingredient];
-
-    setSelectedIngredients(updatedIngredients);
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
   };
 
-  const ingredients = ['Tomato', 'Cheese', 'Bread', 'Beef', 'Chicken', 'Pasta', 'Rice', 'Shrimp'];
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (inputValue.trim() !== '') {
+        setSelectedIngredients([...selectedIngredients, inputValue.trim()]);
+        setInputValue('');
+      }
+    }
+  };
 
-  // Updated mock recipes based on selected ingredients
-  const recipes = [
-    {
-      id: 1,
-      title: 'Caprese Salad',
-      ingredients: ['Tomato', 'Cheese', 'Bread'],
-    },
-    {
-      id: 2,
-      title: 'Beef Stir-Fry',
-      ingredients: ['Beef', 'Rice'],
-    },
-    {
-      id: 3,
-      title: 'Creamy Chicken Pasta',
-      ingredients: ['Chicken', 'Pasta', 'Cheese'],
-    },
-    {
-      id: 4,
-      title: 'Shrimp Scampi',
-      ingredients: ['Shrimp', 'Pasta', 'Bread'],
-    },
-  ];
+  const removeIngredient = (index) => {
+    const newIngredients = [...selectedIngredients];
+    newIngredients.splice(index, 1);
+    setSelectedIngredients(newIngredients);
+  };
 
   const generateMenu = () => {
-    const generatedMenu = recipes.filter((recipe) =>
-      selectedIngredients.every((ingredient) =>
-        recipe.ingredients.includes(ingredient)
-      )
-    );
-    setGeneratedMenu(generatedMenu);
+    // Implement your logic for generating the menu here
+    // Use selectedIngredients to fetch recipes or perform any action
+    // Update the generatedMenu state with the fetched recipes or results
   };
 
   return (
     <div className="ingredient-selection">
-      <h2>Choose Ingredients</h2>
-      <div className="ingredient-checkboxes">
-        {ingredients.map((ingredient) => (
-          <label key={ingredient}>
-            <input
-              type="checkbox"
-              value={ingredient}
-              checked={selectedIngredients.includes(ingredient)}
-              onChange={() => handleIngredientSelect(ingredient)}
-            />
-            {ingredient}
-          </label>
-        ))}
+      <h2>Enter Your Ingredients</h2>
+      <div className="ingredient-input">
+        <div className="selected-ingredients">
+          {selectedIngredients.map((ingredient, index) => (
+            <div key={index} className="ingredient-tag" onClick={() => removeIngredient(index)}>
+              {ingredient}
+              <span className="close-button">×</span>
+            </div>
+          ))}
+          <input
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            placeholder="Press Enter after each ingredient"
+            className="ingredient-input-field"
+          />
+        </div>
+        <button onClick={generateMenu} className="generate-button">
+          Generate Menu
+        </button>
       </div>
-      <button onClick={generateMenu}>Generate Menu</button>
-
-      <h2>Generated Menu</h2>
+      {/* Display Generated Menu */}
       <div className="generated-menu">
-        {generatedMenu.map((recipe) => (
-          <div key={recipe.id} className="recipe-card">
-            <h3>{recipe.title}</h3>
-            {/* Display other recipe details */}
-          </div>
-        ))}
+        {/* Render generated recipes */}
       </div>
     </div>
   );
