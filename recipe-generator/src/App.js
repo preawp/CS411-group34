@@ -3,54 +3,50 @@ import './App.css';
 import Header from './Components/Header';
 import IngredientSelection from './Components/IngredientSelection';
 import LoginPage from './Components/LoginPage';
-import { OAuthProvider, OAuthConsumer } from 'react-oauth';
-
+import { GoogleLogin } from 'react-google-login';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleSignIn = () => {
+  const handleSignIn = (googleUser) =>  {
     // Handle sign-in process, set isLoggedIn to true upon successful authentication
     setIsLoggedIn(true);
+
+    // You can access user information from googleUser object
+    console.log('Logged in user:', googleUser);
+  };
+
+  const handleSignOut = () => {
+    // Handle sign-out process, set isLoggedIn to false upon successful sign-out
+    setIsLoggedIn(false);
+  };
+
+  const onFailure = (error) => {
+    console.log('Login failed:', error);
   };
 
   return (
-    <OAuthProvider
-      oauthKey="your_github_client_id"
-      oauthSecret="your_github_client_secret"
-      redirectUri="your_redirect_uri"
-    >
-      <div className="App">
-        {/* Use OAuthConsumer to wrap the components that depend on user authentication */}
-        <OAuthConsumer>
-          {({ loading, error, data, login }) => {
-            if (loading) return <p>Loading...</p>; // Display a loading message while OAuth is in progress
-            if (error) return <p>Error: {error.message}</p>; // Display an error message if OAuth encounters an error
-
-            if (data) {
-              // User is logged in
-              return (
-                // Render the component for authenticated users
-                <IngredientSelection />
-              );
-            } else {
-              // User is not logged in
-              return (
-                // Render the component for non-authenticated users, passing the handleSignIn function as a prop
-                <LoginPage onSignIn={handleSignIn} />
-              );
-            }
-          }}
-        </OAuthConsumer>
-
-        {/* <Header />
-        {isLoggedIn ? (
+    <div className="App">
+      <Header />
+      {isLoggedIn ? (
+        <>
           <IngredientSelection />
-        ) : (
-          <LoginPage onSignIn={handleSignIn} />
-        )} */}
-      </div>
-    </OAuthProvider>
+          <button onClick={handleSignOut}>Sign Out</button>
+        </>
+      ) : (
+        <>
+          {/* Display Google login button */}
+          <GoogleLogin
+            clientId="your_google_client_id" // Replace with your Google OAuth client ID
+            buttonText="Login with Google"
+            onSuccess={handleSignIn}
+            onFailure={onFailure}
+            cookiePolicy={'single_host_origin'}
+          />
+          <LoginPage />
+        </>
+      )}
+    </div>
   );
 }
 
