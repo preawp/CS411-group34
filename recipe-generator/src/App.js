@@ -5,6 +5,7 @@ import IngredientSelection from './Components/IngredientSelection';
 import LoginPage from './Components/LoginPage';
 import { GoogleLogin } from 'react-google-login';
 
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -12,11 +13,16 @@ function App() {
     // Handle sign-in process, set isLoggedIn to true upon successful authentication
     setIsLoggedIn(true);
 
+    console.log('Login successful! Navigating to next page...');
+
     // You can access user information from googleUser object
     console.log('Logged in user:', googleUser);
   };
 
   const handleSignOut = () => {
+
+    console.log('Logout successful! Navigating to next page...');
+
     // Handle sign-out process, set isLoggedIn to false upon successful sign-out
     setIsLoggedIn(false);
   };
@@ -42,8 +48,8 @@ function App() {
             onSuccess={handleSignIn}
             onFailure={onFailure}
             cookiePolicy={'single_host_origin'}
+            redirectUri="http://localhost:3000/auth/callback"
           />
-          <LoginPage />
         </>
       )}
     </div>
