@@ -8,7 +8,6 @@ api_key = config.SPOONACULAR_API_KEY
 chosen_ingredients = ['Tomato', 'Cheese', 'Bread', 'Beef', 'Chicken', 'Pasta', 'Rice', 'Shrimp']
 
 def get_recipes(ingredients):
-    recipe_data = []
     params = {
         'apiKey': api_key,
         'ingredients': ','.join(ingredients),
@@ -26,8 +25,7 @@ def get_recipes(ingredients):
 
     if recipe_response.status_code == 200:
         # the recommended recipes
-        recipe_data = recipe_response.json()
-        return recipe_data
+        return recipe_response.json()
 
     else:
         print(f'Error: {recipe_response.status_code}')
