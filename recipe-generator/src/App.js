@@ -49,6 +49,7 @@ function App() {
             onFailure={onFailure}
             cookiePolicy={'single_host_origin'}
             redirectUri="http://localhost:3000/auth/callback"
+            uxMode="redirect"
           />
         </>
       )}
