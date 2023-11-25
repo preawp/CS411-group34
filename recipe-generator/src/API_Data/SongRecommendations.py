@@ -1,7 +1,6 @@
 import requests
 import config
 import base64
-from RecipeInformation import taste_data
 
 client_id = config.SPOTIFY_CLIENT_ID
 client_secret = config.SPOTIFY_CLIENT_SECRET
@@ -87,5 +86,5 @@ def get_song_recommendations(taste_data):
             print(response.text)
             return None
         
-tracks_summary = get_song_recommendations(taste_data)
+#tracks_summary = get_song_recommendations(taste_data)
 # print(tracks_summary)
