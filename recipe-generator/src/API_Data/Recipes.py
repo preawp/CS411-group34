@@ -1,16 +1,7 @@
 import requests
 import config
-from flask import Flask, jsonify, request
-from flask_cors import CORS
 
 api_key = config.SPOONACULAR_API_KEY
-app = Flask(__name__)
-CORS(app)
-#chosen_ingredients = ['Tomato', 'Cheese', 'Bread', 'Beef', 'Chicken', 'Pasta', 'Rice', 'Shrimp']
-
-
-# User input for the ingredients specified. Placeholder
-# until we figure out how to implement user input
 
 def get_recipes(ingredients):
     params = {
@@ -37,8 +28,6 @@ def get_recipes(ingredients):
         print(recipe_response.text)
         return None
 
-#recipe_data = get_recipes(chosen_ingredients)
-
 # returns a summary of the recipe as a list, 
 # [title, spoonacular summary, missed ingredients, used ingredients, link for an image]
 def get_recipe_summary(recipe):
@@ -64,5 +53,3 @@ def get_recipe_summary(recipe):
 # Takes a list of recipes as input, returns a list of recipe summaries
 def get_recipe_summaries(recipe_data):
     return [get_recipe_summary(recipe) for recipe in recipe_data]
-
-#print(recipe_data)

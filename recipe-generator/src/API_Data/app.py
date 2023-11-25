@@ -5,7 +5,7 @@ import SongRecommendations
 import Recipes
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
 
 @app.route('/')
 def home():
@@ -20,26 +20,6 @@ def generate_menu():
 
     else:
         return jsonify({'error': 'Invalid request'}), 400
-
-'''
-@app.route('/update-ingredients', methods = ['POST'])
-def update_ingredients():
-    global chosen_ingredients
-    data = request.get_json()
-
-    if 'ingredients' in data:
-        chosen_ingredients = data['ingredients']
-        return jsonify({'message': 'Ingredients updated'})
-    else:
-        return jsonify({'error': 'Invalid request'}), 400
-
-@app.route('/generate-menu', methods = ['GET'])
-def generate_menu():
-    global chosen_ingredients
-    recipe_summaries = Recipes.get_recipe_summaries(Recipes.get_recipes(chosen_ingredients))
-
-    return jsonify(recipe_summaries)
-'''
 
 @app.route('/generate-songs', methods = ['POST'])
 def generate_songs():
