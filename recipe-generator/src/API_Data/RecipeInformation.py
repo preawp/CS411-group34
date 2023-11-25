@@ -6,7 +6,6 @@ import config
 api_key = config.SPOONACULAR_API_KEY
 
 # Placeholder until we figure out how to get the chosen recipe as user input
-chosen_recipe_index = 0
 #chosen_recipe = recipe_data[chosen_recipe_index]
     
 #recipe_summaries = get_recipe_summaries(recipe_data)
@@ -14,8 +13,8 @@ chosen_recipe_index = 0
 
 # get the taste analytics of the recipe. 
 # Returns {sweetness, saltiness, sourness, bitterness, savoriness, fattiness, spiciness}
-def get_taste_data(recipe_data):
-    taste_url = f'https://api.spoonacular.com/recipes/{recipe_data[5]}/tasteWidget.json?apiKey={api_key}&normalize=true'
+def get_taste_data(recipe_id):
+    taste_url = f'https://api.spoonacular.com/recipes/{recipe_id}/tasteWidget.json?apiKey={api_key}&normalize=true'
         
     taste_response = requests.get(taste_url)
 
@@ -29,10 +28,10 @@ def get_taste_data(recipe_data):
 #taste_data = get_taste_data(chosen_recipe)
 #print(taste_data)
 
-def get_instructions(recipe_data):
+def get_instructions(recipe_id):
     instructions = []
 
-    instructions_url = f'https://api.spoonacular.com/recipes/{recipe_data[5]}/analyzedInstructions?apiKey={api_key}'
+    instructions_url = f'https://api.spoonacular.com/recipes/{recipe_id}/analyzedInstructions?apiKey={api_key}'
     instructions_response = requests.get(instructions_url)
 
     if instructions_response.status_code == 200:

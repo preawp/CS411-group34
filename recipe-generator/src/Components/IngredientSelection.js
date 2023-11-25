@@ -30,7 +30,7 @@ const IngredientSelection = () => {
     setSelectedIngredients(newIngredients);
   };
 
-  const generateMenu = async () => {
+  /* const generateMenu = async () => {
 
     const updateIngredientsUrl = 'http://localhost:5000/update-ingredients';
     const updateIngredientsData = {ingredients: selectedIngredients};
@@ -51,6 +51,38 @@ const IngredientSelection = () => {
 
       const generateMenuUrl = 'http://localhost:5000/generate-menu';
       const generatedMenuResponse = await fetch(generateMenuUrl);
+      if (generatedMenuResponse.ok) {
+        const generatedMenuData = await generatedMenuResponse.json();
+        console.log('Generated Menu Data:', generatedMenuData);
+        setGeneratedMenu(generatedMenuData);
+      } else {
+        console.error('Error fetching generated menu:', generatedMenuResponse.status);
+      }
+    } catch (error) {
+      console.error('Error updating ingredients:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  */
+  const generateMenu = async () => {
+
+    const generatedMenuUrl = 'http://localhost:5000/generate-menu';
+    const updateIngredientsData = {ingredients: selectedIngredients};
+
+    try {
+      setLoading(true);
+
+      const generatedMenuResponse = await fetch(generatedMenuUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateIngredientsData),
+      });
+
+      console.log(generatedMenuResponse.message);
+
       if (generatedMenuResponse.ok) {
         const generatedMenuData = await generatedMenuResponse.json();
         console.log('Generated Menu Data:', generatedMenuData);

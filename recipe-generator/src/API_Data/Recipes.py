@@ -18,7 +18,7 @@ def get_recipes(ingredients):
         'ingredients': ','.join(ingredients),
 
         #number of recipes to return, 1 for now
-        'number': '1',
+        'number': '5',
         'limitLicense': "true",
         'ranking': '2',
         'ignorePantry': 'true'
