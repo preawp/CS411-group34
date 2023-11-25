@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './IngredientSelection.css'; // Ensure this path matches the location of your CSS file
+import './IngredientSelection.css';
 import {useNavigate} from 'react-router-dom';
 import DOMPurify from 'dompurify';
 
@@ -30,41 +30,6 @@ const IngredientSelection = () => {
     setSelectedIngredients(newIngredients);
   };
 
-  /* const generateMenu = async () => {
-
-    const updateIngredientsUrl = 'http://localhost:5000/update-ingredients';
-    const updateIngredientsData = {ingredients: selectedIngredients};
-
-    try {
-      setLoading(true);
-
-      const updateIngredientsResponse = await fetch(updateIngredientsUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updateIngredientsData),
-      });
-
-      const updateIngredientsResult = await updateIngredientsResponse.json();
-      console.log(updateIngredientsResult.message);
-
-      const generateMenuUrl = 'http://localhost:5000/generate-menu';
-      const generatedMenuResponse = await fetch(generateMenuUrl);
-      if (generatedMenuResponse.ok) {
-        const generatedMenuData = await generatedMenuResponse.json();
-        console.log('Generated Menu Data:', generatedMenuData);
-        setGeneratedMenu(generatedMenuData);
-      } else {
-        console.error('Error fetching generated menu:', generatedMenuResponse.status);
-      }
-    } catch (error) {
-      console.error('Error updating ingredients:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  */
   const generateMenu = async () => {
 
     const generatedMenuUrl = 'http://localhost:5000/generate-menu';
@@ -97,10 +62,6 @@ const IngredientSelection = () => {
     }
   };
   const handleMoreInformation = (recipe_id) => {
-    // Here, you can use the index to determine the selected recipe
-    // and navigate to a new page with more information.
-    // For now, let's just log the index.
-    console.log('More Information clicked for recipe id:', recipe_id);
     navigate(`/recipe-details/${recipe_id}`)
   };
   return (
@@ -127,7 +88,6 @@ const IngredientSelection = () => {
           Generate Menu
         </button>
       </div>
-      {/* Display Generated Menu */}
       <div className="generated-menu">
         {loading ? (
           <p>Loading...</p>
