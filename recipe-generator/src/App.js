@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import './App.css';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import Header from './Components/Header';
 import IngredientSelection from './Components/IngredientSelection';
 import SignInCallback from './Components/SignInCallback';
@@ -43,16 +43,6 @@ function App() {
     );
   }, []);
 
-  const handleSignIn = (googleUser) => {
-    setIsLoggedIn(true);
-    console.log('Login successful! Navigating to the next page...');
-    console.log('Logged in user:', googleUser);
-  };
-
-  const onFailure = (error) => {
-    console.log('Login failed:', error);
-  };
-
   const handleMoreInformation = (recipe_id) => {
     // Use navigate to go to the RecipeDetailsPage with the selected index
     navigate(`/recipe-details/${recipe_id}`);
@@ -76,16 +66,6 @@ function App() {
           {/* Add more routes for other pages */}
         </Routes>
       </div>
-
-    // <div className="App">
-    //   <div id="signInDiv"></div>
-    //   {}
-    //   { user &&
-    //     <div>
-    //       <img src={user.picture}></img>
-    //     </div>
-    //   }
-    // </div>
   );
 }
 
