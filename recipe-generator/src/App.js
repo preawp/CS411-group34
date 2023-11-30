@@ -1,14 +1,44 @@
 // App.js
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import './App.css';
 import Header from './Components/Header';
 import IngredientSelection from './Components/IngredientSelection';
 import SignInCallback from './Components/SignInCallback';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
+import { jwtDecode } from "jwt-decode";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ user, setUser ] = useState({});
+
+  function handleCallbackResponse(response) {
+    console.log("Encoded JWT ID token: " + response.credential);
+    var userObject = jwtDecode(response.credential);
+    console.log(userObject);
+    setUser(userObject);
+    document.getElementById("signInDiv").hidden = true;
+    setIsLoggedIn(true);
+  }
+
+  function handleSignOut(event) {
+    setUser({});
+    document.getElementById("signInDiv").hidden = false;
+
+  }
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: "342236352531-9djnv5q03jlfb7amogjmb2j6l7pf3lme.apps.googleusercontent.com",
+      callback: handleCallbackResponse
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("signInDiv"),
+      { theme: "outline", size: "large"}
+    );
+  }, []);
 
   const handleSignIn = (googleUser) => {
     setIsLoggedIn(true);
@@ -16,48 +46,39 @@ function App() {
     console.log('Logged in user:', googleUser);
   };
 
-  const handleSignOut = () => {
-    setIsLoggedIn(false);
-    console.log('Logout successful! Navigating to the next page...');
-  };
 
   const onFailure = (error) => {
     console.log('Login failed:', error);
   };
 
   return (
-    <Router>
-      <div className="App">
+    <div className="App">
         <Header />
         <Routes>
-          {/* Use the "element" prop */}
-          <Route path="/auth/callback" element={<SignInCallback />} />
           <Route
             path="/"
             element={
               isLoggedIn ? (
-                <>
-                  <IngredientSelection />
-                  <button onClick={handleSignOut}>Sign Out</button>
-                </>
+                <IngredientSelection handleMoreInformation={handleMoreInformation} />
               ) : (
-                <>
-                  <GoogleLogin
-                    clientId="342236352531-9djnv5q03jlfb7amogjmb2j6l7pf3lme.apps.googleusercontent.com"
-                    buttonText="Login with Google"
-                    onSuccess={handleSignIn}
-                    onFailure={onFailure}
-                    cookiePolicy={'single_host_origin'}
-                    redirectUri="http://localhost:3000/auth/callback"
-                    uxMode="redirect"
-                  />
-                </>
+                <div id="signInDiv"></div>
               )
             }
           />
+          <Route path="/recipe-details/:id" element={<RecipeDetailsPage />} />
+          {/* Add more routes for other pages */}
         </Routes>
       </div>
-    </Router>
+
+    // <div className="App">
+    //   <div id="signInDiv"></div>
+    //   {}
+    //   { user &&
+    //     <div>
+    //       <img src={user.picture}></img>
+    //     </div>
+    //   }
+    // </div>
   );
 }
 
