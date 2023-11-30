@@ -2,15 +2,18 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import './App.css';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './Components/Header';
 import IngredientSelection from './Components/IngredientSelection';
 import SignInCallback from './Components/SignInCallback';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import { jwtDecode } from "jwt-decode";
+import RecipeDetailsPage from './Components/RecipeDetailsPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
   const [ user, setUser ] = useState({});
 
   function handleCallbackResponse(response) {
@@ -46,9 +49,13 @@ function App() {
     console.log('Logged in user:', googleUser);
   };
 
-
   const onFailure = (error) => {
     console.log('Login failed:', error);
+  };
+
+  const handleMoreInformation = (recipe_id) => {
+    // Use navigate to go to the RecipeDetailsPage with the selected index
+    navigate(`/recipe-details/${recipe_id}`);
   };
 
   return (
