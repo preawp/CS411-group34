@@ -1,14 +1,10 @@
 // App.js
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 import './App.css';
-import {useNavigate } from 'react-router-dom';
 import Header from './Components/Header';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import IngredientSelection from './Components/IngredientSelection';
-import SignInCallback from './Components/SignInCallback';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { GoogleLogin } from 'react-google-login';
-import { jwtDecode } from "jwt-decode";
+import LoginPage from './Components/LoginPage';
 import RecipeDetailsPage from './Components/RecipeDetailsPage';
 
 function App() {
@@ -16,32 +12,15 @@ function App() {
   const navigate = useNavigate();
   const [ user, setUser ] = useState({});
 
-  function handleCallbackResponse(response) {
-    console.log("Encoded JWT ID token: " + response.credential);
-    var userObject = jwtDecode(response.credential);
-    console.log(userObject);
-    setUser(userObject);
-    document.getElementById("signInDiv").hidden = true;
+  const handleSignIn = () => {
+    // Handle sign-in process, set isLoggedIn to true upon successful authentication
     setIsLoggedIn(true);
-  }
-
+  };
+  
   function handleSignOut(event) {
     setUser({});
     document.getElementById("signInDiv").hidden = false;
-
-  }
-  useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: "342236352531-9djnv5q03jlfb7amogjmb2j6l7pf3lme.apps.googleusercontent.com",
-      callback: handleCallbackResponse
-    });
-
-    google.accounts.id.renderButton(
-      document.getElementById("signInDiv"),
-      { theme: "outline", size: "large"}
-    );
-  }, []);
+  };
 
   const handleMoreInformation = (recipe_id) => {
     // Use navigate to go to the RecipeDetailsPage with the selected index
@@ -58,7 +37,7 @@ function App() {
               isLoggedIn ? (
                 <IngredientSelection handleMoreInformation={handleMoreInformation} />
               ) : (
-                <div id="signInDiv"></div>
+                <LoginPage onSignIn={handleSignIn} />
               )
             }
           />

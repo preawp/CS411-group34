@@ -1,24 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './LoginPage.css';
+import { GoogleLogin } from 'react-google-login';
+import { jwtDecode } from "jwt-decode";
+
 
 const LoginPage = ({ onSignIn }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ user, setUser ] = useState({});
 
-  const handleLogin = () => {
-    // Handle login functionality
-    // Simulate successful authentication, set isLoggedIn to true
+  function handleCallbackResponse(response) {
+    console.log("Encoded JWT ID token: " + response.credential);
+    var userObject = jwtDecode(response.credential);
+    console.log(userObject);
+    setUser(userObject);
+    setIsLoggedIn(true);
     onSignIn();
   };
 
+useEffect(() => {
+  /* global google */
+  google.accounts.id.initialize({
+    client_id: "342236352531-9djnv5q03jlfb7amogjmb2j6l7pf3lme.apps.googleusercontent.com",
+    callback: handleCallbackResponse
+  });
+
+  google.accounts.id.renderButton(
+    document.getElementById("signInDiv"),
+    { theme: "outline", size: "large"}
+  );
+}, []);
+
   return (
     <div className="login-container">
-      <form onSubmit={handleLogin} className="login-form">
+      <form className="login-form">
         {/* Input fields for username and password */}
-        <button type="submit">Login</button>
+        <div id="signInDiv"></div>
       </form>
     </div>
   );
-};
-
+  }
 export default LoginPage;
