@@ -8,7 +8,6 @@
     justify-content: center;
     height: 5vh; /* Set to 25% of the viewport height */
     background-color: #ffffff8a; /* Adjust background color */
-   
   }
   
   
@@ -19,6 +18,7 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(49, 197, 165, 0.1); /* Mint color shadow */
     background-color: #fff; /* Form background color */
+    text-align: center;
   }
   
   /* Form fields */
@@ -46,6 +46,14 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
+  /* Additional styles for the Google login container */
+  #signInDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   .login-form button:hover {
     background-color: #36dab6; /* Darker mint on hover */
     transform: translateY(-2px);
