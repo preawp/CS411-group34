@@ -1,71 +1,70 @@
-/* LoginPage.css */
+
 
 /* Main container */
 .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 5vh; /* Set to 25% of the viewport height */
-    background-color: #ffffff8a; /* Adjust background color */
-  }
-  
-  
-  /* Login form */
-  .login-form {
-    width: 300px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(49, 197, 165, 0.1); /* Mint color shadow */
-    background-color: #fff; /* Form background color */
-    text-align: center;
-  }
-  
-  /* Form fields */
-  .login-form input[type='text'],
-  .login-form input[type='password'] {
-    width: calc(100% - 20px);
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  /* Login button */
-  .login-form button {
-    font-family: 'DM Serif Display', serif; /* DM Serif Display font */
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: none;
-    border-radius: 25px;
-    background-color: #35d2b0; /* Mint color */
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Additional styles for the Google login container */
-  #signInDiv {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh; /* Set to 100% of the viewport height */
+  background-color: #ffffff8a; /* Adjust background color */
+}
 
-  .login-form button:hover {
-    background-color: #36dab6; /* Darker mint on hover */
-    transform: translateY(-2px);
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Add transition properties */
-  }
-  
-  /* Error message */
-  .error-message {
-    color: #ff0000;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  /* Additional styles or modifications can be made as needed */
-  
+/* Login form */
+.login-form {
+  width: 300px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(49, 197, 165, 0.1); /* Mint color shadow */
+  background-color: #fff; /* Form background color */
+  text-align: center;
+  margin-top: auto; /* Push the form to the middle of the container */
+  margin-bottom: auto; /* Push the form to the middle of the container */
+}
+
+
+/* Form fields */
+.login-form input[type='email'],
+.login-form input[type='password'] {
+  width: calc(100% - 40px); /* Adjust width */
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Login button */
+.login-form button {
+  font-family: 'DM Serif Display', serif; /* DM Serif Display font */
+  width: calc(100% - 40px); /* Adjust width */
+  padding: 10px;
+  border: none;
+  border-radius: 25px;
+  background-color: #35d2b0; /* Mint color */
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Add transition properties */
+  margin-bottom: 15px; /* Adjust bottom margin */
+}
+
+.login-form button:hover {
+  background-color: #36dab6; /* Darker mint on hover */
+  transform: translateY(-2px);
+}
+
+/* Additional styles for the Google login container */
+#signInDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px; /* Adjust top margin */
+}
+
+/* Error message */
+.error-message {
+  color: #ff0000;
+  margin-bottom: 10px;
+  text-align: center;
+}
