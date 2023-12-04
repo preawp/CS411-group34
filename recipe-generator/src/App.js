@@ -7,6 +7,8 @@ import IngredientSelection from './Components/IngredientSelection';
 import LoginPage from './Components/LoginPage';
 import RecipeDetailsPage from './Components/RecipeDetailsPage';
 import { auth } from './firebaseConfig';
+import { createUserWithEmailAndPassword, onAuthStateChanged, updateCurrentUser} from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 function App() {
 
@@ -15,6 +17,10 @@ function App() {
   const navigate = useNavigate();
   const [ user, setUser ] = useState({});
 
+onAuthStateChanged(auth,(currentUser) => {
+    setUser(currentUser);
+
+  })
 
   const handleSignIn = () => {
     // Handle sign-in process, set isLoggedIn to true upon successful authentication
@@ -34,6 +40,8 @@ function App() {
   return (
     <div className="App">
         <Header user={user} onSignOut={handleSignOut} /> {/* Pass user info and sign-out function */}
+        <h4> Welcome!</h4>
+        {user.email}
         <Routes>
           <Route
             path="/"
