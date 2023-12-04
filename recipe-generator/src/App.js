@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-route
 import IngredientSelection from './Components/IngredientSelection';
 import LoginPage from './Components/LoginPage';
 import RecipeDetailsPage from './Components/RecipeDetailsPage';
+import { auth } from './firebaseConfig';
 
 function App() {
 
@@ -14,13 +15,14 @@ function App() {
   const navigate = useNavigate();
   const [ user, setUser ] = useState({});
 
+
   const handleSignIn = () => {
     // Handle sign-in process, set isLoggedIn to true upon successful authentication
     setIsLoggedIn(true);
   };
   
   function handleSignOut(event) {
-    setUser({});
+    setUser({}); 
     document.getElementById("signInDiv").hidden = false;
   };
 
@@ -31,7 +33,7 @@ function App() {
 
   return (
     <div className="App">
-        <Header />
+        <Header user={user} onSignOut={handleSignOut} /> {/* Pass user info and sign-out function */}
         <Routes>
           <Route
             path="/"
@@ -44,6 +46,7 @@ function App() {
             }
           />
           <Route path="/recipe-details/:id" element={<RecipeDetailsPage />} />
+
           {/* Add more routes for other pages */}
         </Routes>
       </div>

@@ -4,36 +4,51 @@ import { GoogleLogin } from 'react-google-login';
 import { jwtDecode } from 'jwt-decode';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import {auth } from '../firebaseConfig';
+import {auth} from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 
-const LoginPage = ({ onSignIn }) => {
+const LoginPage = ({ onSignIn, }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  
   const [isRegistering, setIsRegistering] = useState(true); // Set to true to show registration fields
   const [user, setUser] = useState({});
   const navigate = useNavigate();
 
-  const register = async () => {
+  const handleRegistration = async (e) => {
+    e.preventDefault();
+    console.log('Registering user:', registerEmail, registerPassword);
+    
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
       const user = userCredential.user;
       console.log('User registered:', user);
+      setRegisterEmail('');
+      setRegisterPassword('');
     } catch (error) {
       console.error('Registration error:', error);
     }
   };
-  
+
+
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       console.log('User logged in:', userCredential.user);
-      onSignIn();
-      navigate('/');
+      const userData = userCredential.user;
+  
+      // Ensure user data exists before setting it
+      if (userData && userData.email) {
+        setUser(userData); // Save user info after login
+        onSignIn(userData); // Pass user data to handleSignIn
+        navigate('/');
+      } else {
+        console.error('User data not available');
+      }
     } catch (error) {
       console.error('Login error:', error.code, error.message);
       // Log Firebase error details for debugging
@@ -42,6 +57,7 @@ const LoginPage = ({ onSignIn }) => {
   };
   
   
+
   
 
   function handleCallbackResponse(response) {
@@ -54,13 +70,6 @@ const LoginPage = ({ onSignIn }) => {
   }
 
 
-  const handleRegistration = (e) => {
-    e.preventDefault();
-    console.log('Registering user:', registerEmail, registerPassword);
-    // Perform registration logic using registerEmail and registerPassword
-    setRegisterEmail('');
-    setRegisterPassword('');
-  };
 
   useEffect(() => {
     /* global google */
