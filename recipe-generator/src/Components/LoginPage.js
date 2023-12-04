@@ -4,7 +4,8 @@ import { GoogleLogin } from 'react-google-login';
 import { jwtDecode } from 'jwt-decode';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import {auth } from './firebaseConfig';
+import {auth } from '../firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = ({ onSignIn }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,6 +15,7 @@ const LoginPage = ({ onSignIn }) => {
   const [loginPassword, setLoginPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(true); // Set to true to show registration fields
   const [user, setUser] = useState({});
+  const navigate = useNavigate();
 
   const register = async () => {
     try {
@@ -29,10 +31,13 @@ const LoginPage = ({ onSignIn }) => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      console.log(userCredential.user);
-      // User successfully logged in
+      console.log('User logged in:', userCredential.user);
+      onSignIn();
+      navigate('/');
     } catch (error) {
-      console.log('Login error:', error.message);
+      console.error('Login error:', error.code, error.message);
+      // Log Firebase error details for debugging
+      // Check the Firebase documentation for possible error codes and their meanings
     }
   };
   
