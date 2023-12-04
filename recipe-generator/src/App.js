@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-route
 import IngredientSelection from './Components/IngredientSelection';
 import LoginPage from './Components/LoginPage';
 import RecipeDetailsPage from './Components/RecipeDetailsPage';
-import { auth } from './firebaseConfig';
-import { createUserWithEmailAndPassword, onAuthStateChanged, updateCurrentUser} from 'firebase/auth';
+import { auth } from './firebase-Config';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateCurrentUser} from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 function App() {
@@ -16,6 +16,13 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [ user, setUser ] = useState({});
+
+const logout = async () => {
+    await signOut(auth);
+    setIsLoggedIn(false); // Reset isLoggedIn state to false
+    setUser({}); // Clear user information
+    navigate("/"); // Redirect to the login page after signing out
+  };
 
 onAuthStateChanged(auth,(currentUser) => {
     setUser(currentUser);
@@ -27,10 +34,6 @@ onAuthStateChanged(auth,(currentUser) => {
     setIsLoggedIn(true);
   };
   
-  function handleSignOut(event) {
-    setUser({}); 
-    document.getElementById("signInDiv").hidden = false;
-  };
 
   const handleMoreInformation = (recipe_id) => {
     // Use navigate to go to the RecipeDetailsPage with the selected index
@@ -39,9 +42,13 @@ onAuthStateChanged(auth,(currentUser) => {
 
   return (
     <div className="App">
-        <Header user={user} onSignOut={handleSignOut} /> {/* Pass user info and sign-out function */}
-        <h4> Welcome!</h4>
-        {user.email}
+    <Header user={user} onSignOut={logout} />
+    {isLoggedIn && (
+        <>
+          <h4>Welcome{user?.email ? `, ${user.email}!` : ", Guest!"}</h4>
+          {user?.email && <button onClick={logout}>Sign Out</button>}
+        </>
+      )}
         <Routes>
           <Route
             path="/"
