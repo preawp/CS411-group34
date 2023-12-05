@@ -13,6 +13,8 @@ const LoginPage = ({ onSignIn }) => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [user, setUser] = useState({});
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const navigate = useNavigate();
 
   const handleRegistration = async (e) => {
@@ -25,8 +27,16 @@ const LoginPage = ({ onSignIn }) => {
       console.log('User registered:', user);
       setRegisterEmail('');
       setRegisterPassword('');
+      setShowSuccessMessage(true); // Show success message
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 3000); // Hide success message after 3 seconds
     } catch (error) {
       console.error('Registration error:', error);
+      setShowErrorMessage(true); // Show error message
+      setTimeout(() => {
+        setShowErrorMessage(false);
+      }, 3000); // Hide error message after 3 seconds
     }
   };
 
@@ -38,14 +48,18 @@ const LoginPage = ({ onSignIn }) => {
       const userData = userCredential.user;
 
       if (userData && userData.email) {
-        setUser(userData); // Save user info after login
-        onSignIn(userData); // Pass user data to handleSignIn
+        setUser(userData);
+        onSignIn(userData);
         navigate('/');
       } else {
         console.error('User data not available');
       }
     } catch (error) {
       console.error('Login error:', error.code, error.message);
+      setShowErrorMessage(true); // Show error message for login failure
+      setTimeout(() => {
+        setShowErrorMessage(false);
+      }, 3000); // Hide error message after 3 seconds
     }
   };
   
@@ -128,7 +142,7 @@ const LoginPage = ({ onSignIn }) => {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Password, minimum of 6 characters"
               value={registerPassword}
               onChange={(e) => setRegisterPassword(e.target.value)}
             />
@@ -139,10 +153,10 @@ const LoginPage = ({ onSignIn }) => {
         {/* Google login button */}
         <div id="signInDiv"></div>
 
-        {/* Sign out button */}
-        {isLoggedIn && (
-          <button onClick={handleLogout}>Sign Out</button>
-        )}
+    
+        {/* Success and Error messages */}
+        {showSuccessMessage && <div className="success-message">Registration Successful!</div>}
+        {showErrorMessage && <div className="error-message">Registration/Login Failed. Please try again.</div>}
       </form>
     </div>
   );
