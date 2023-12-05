@@ -10,22 +10,24 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
 function App() {
+
+  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
+  const [ user, setUser ] = useState({});
 
-  const logout = async () => {
+const logout = async () => {
     await signOut(auth);
-    setIsLoggedIn(false);
-    setUser({});
-    navigate('/');
+    setIsLoggedIn(false); 
+    setUser({}); 
+    navigate("/"); 
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        setIsLoggedIn(true);
+
 
         const userDocRef = doc(db, 'users', currentUser.uid);
         try {
@@ -47,10 +49,13 @@ function App() {
   }, []);
 
   const handleSignIn = () => {
+    
     setIsLoggedIn(true);
   };
+  
 
   const handleMoreInformation = (recipe_id) => {
+    
     navigate(`/recipe-details/${recipe_id}`);
   };
 
@@ -65,7 +70,7 @@ function App() {
               <button onClick={logout}>Sign Out</button>
             </>
           ) : (
-            <p>Loading...</p>
+            <p></p>
           )}
         </>
       )}

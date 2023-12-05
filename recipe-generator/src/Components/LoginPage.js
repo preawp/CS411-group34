@@ -3,8 +3,9 @@ import './LoginPage.css';
 import { GoogleLogin } from 'react-google-login';
 import { jwtDecode } from 'jwt-decode';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '../firebase-Config';
+import { auth, db  } from '../firebase-Config';
 import { useNavigate } from 'react-router-dom';
+import { doc, setDoc, getFirestore, collection, getDoc } from 'firebase/firestore';
 
 const LoginPage = ({ onSignIn }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,29 +17,43 @@ const LoginPage = ({ onSignIn }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const navigate = useNavigate();
+  const [name, setName] = useState('');
 
+  
   const handleRegistration = async (e) => {
     e.preventDefault();
     console.log('Registering user:', registerEmail, registerPassword);
-
+  
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
       const user = userCredential.user;
       console.log('User registered:', user);
+  
+      const userId = user.uid;
+      const userDocRef = doc(db, 'users', userId);
+  
+    
+      await setDoc(userDocRef, {
+        email: registerEmail,
+        name: name,
+      });
+  
       setRegisterEmail('');
       setRegisterPassword('');
-      setShowSuccessMessage(true); // Show success message
+      setShowSuccessMessage(true);
       setTimeout(() => {
         setShowSuccessMessage(false);
-      }, 3000); // Hide success message after 3 seconds
+      }, 3000); 
+
     } catch (error) {
       console.error('Registration error:', error);
-      setShowErrorMessage(true); // Show error message
+      setShowErrorMessage(true);
       setTimeout(() => {
         setShowErrorMessage(false);
-      }, 3000); // Hide error message after 3 seconds
+      }, 3000); 
     }
   };
+  
 
   const handleEmailLogin = async (e) => {
     e.preventDefault();
@@ -46,9 +61,22 @@ const LoginPage = ({ onSignIn }) => {
       const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       console.log('User logged in:', userCredential.user);
       const userData = userCredential.user;
-
+  
       if (userData && userData.email) {
         setUser(userData);
+        
+        
+        const userId = userData.uid;
+        const userDocRef = doc(db, 'users', userId);
+        const userSnapshot = await getDoc(userDocRef);
+  
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.data();
+  
+
+          setUser(prevState => ({ ...prevState, name: userData.name }));
+        }
+  
         onSignIn(userData);
         navigate('/');
       } else {
@@ -56,18 +84,39 @@ const LoginPage = ({ onSignIn }) => {
       }
     } catch (error) {
       console.error('Login error:', error.code, error.message);
-      setShowErrorMessage(true); // Show error message for login failure
+      setShowErrorMessage(true);
       setTimeout(() => {
         setShowErrorMessage(false);
-      }, 3000); // Hide error message after 3 seconds
+      }, 3000); 
     }
   };
   
+  
+  const fetchUserName = async () => {
+    try {
+      if (user.uid) {
+        const userDocRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(userDocRef);
+        
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          setUser(prevUser => ({ ...prevUser, name: userData.name })); // Merge name with existing user data
+        } else {
+          console.log('User document does not exist');
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching user name:', error);
+    }
+  };
+  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
         setIsLoggedIn(true);
+        fetchUserName();
       } else {
         setUser({});
         setIsLoggedIn(false);
@@ -146,6 +195,14 @@ const LoginPage = ({ onSignIn }) => {
               value={registerPassword}
               onChange={(e) => setRegisterPassword(e.target.value)}
             />
+
+            <input
+              type="email"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+
             <button onClick={handleRegistration}>Register</button>
           </div>
         </div>
