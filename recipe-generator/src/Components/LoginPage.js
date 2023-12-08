@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthState
 import { auth, db  } from '../firebase-Config';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc, getFirestore, collection, getDoc } from 'firebase/firestore';
+<script src="https://accounts.google.com/gsi/client"></script>
 
 const LoginPage = ({ onSignIn }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
