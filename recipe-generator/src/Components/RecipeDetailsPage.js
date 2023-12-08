@@ -75,6 +75,7 @@ const RecipeDetailsPage = () => {
 
   return (
     <div>
+        <h4>Welcome!</h4>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
   
