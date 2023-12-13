@@ -1,7 +1,7 @@
 import requests
 import config
 import base64
-#import RecipeInformation
+import random
 
 client_id = config.SPOTIFY_CLIENT_ID
 client_secret = config.SPOTIFY_CLIENT_SECRET
@@ -60,8 +60,8 @@ def get_song_recommendations(taste_data):
 
     params = {
             "seed_genres": ','.join(selected_genres),
-            "target_energy": 0.25 + taste_values[6] * 0.006,
-            "limit": 5,  # 5 recommendations for now
+            "target_energy": 0.25 + (taste_values[6] + random.randint(-20, 20)) * 0.006,
+            "limit": 5,  # 5 recommendations
         }
 
     if access_token:
@@ -88,8 +88,3 @@ def get_song_recommendations(taste_data):
             print(f'Error: {response.status_code}')
             print(response.text)
             return None
-        
-#tracks_summary = get_song_recommendations(RecipeInformation.get_taste_data(12345))
-#print(tracks_summary)
-#tracks_summary = get_song_recommendations(taste_data)
-# print(tracks_summary)

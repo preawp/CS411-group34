@@ -12,6 +12,7 @@ CORS(app)
 def home():
     return "Welcome to my flask server"
 
+# Returns recipes based on posted ingredients
 @app.route('/generate-menu', methods = ['POST'])
 def generate_menu():
     data = request.get_json()
@@ -22,6 +23,7 @@ def generate_menu():
     else:
         return jsonify({'error': 'Invalid request'}), 400
 
+# Returns songs based on posted recipe ids.
 @app.route('/generate-songs', methods = ['POST'])
 def generate_songs():
     data = request.get_json()
@@ -34,6 +36,7 @@ def generate_songs():
     else:
         return jsonify({'error': 'Invalid request'}), 400
     
+# Returns instructions given recipe id
 @app.route('/get-instructions', methods = ['POST'])
 def get_instructions():
     data = request.get_json()
