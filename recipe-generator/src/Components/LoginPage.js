@@ -6,6 +6,8 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthState
 import { auth, db  } from '../firebase-Config';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc, getFirestore, collection, getDoc } from 'firebase/firestore';
+import { GOOGLE_CLIENT_ID } from './config';
+
 <script src="https://accounts.google.com/gsi/client"></script>
 
 const LoginPage = ({ onSignIn }) => {
@@ -150,7 +152,7 @@ const LoginPage = ({ onSignIn }) => {
   useEffect(() => {
     /* global google */
     google.accounts.id.initialize({
-      client_id: '342236352531-9djnv5q03jlfb7amogjmb2j6l7pf3lme.apps.googleusercontent.com',
+      client_id: GOOGLE_CLIENT_ID,
       callback: handleCallbackResponse,
     });
 
